@@ -1,3 +1,5 @@
 *~
 .env
 audioout.wav
+picoloop/bars_threads.csv
+picoloop/note_array.csv

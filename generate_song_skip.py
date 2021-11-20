@@ -42,7 +42,7 @@ def run(seed):
     Writes out a random song to the notes_array.csv and bars_threads.csv files.
     The shape is hard coded (20 bars, up to 20 tracks)
     """
-    print("sedd", seed)
+    print("seed", seed)
     np.random.seed(seed)
     bars_header = "4,20"
     notes_header = "20,16"
@@ -53,7 +53,6 @@ def run(seed):
 
     # TODO: this is a workaround to get off the ground without
     # too much variation.
-    # We restrict to: 2 threads, channel 0 and 1
     # We restrict the note range to between 20 and 60
     # and only allow 4 notes per thread to be non zero
     # In practice the gaps between notes are more common than
@@ -63,12 +62,12 @@ def run(seed):
 
     def track(mintrack=0, maxtrack=max_tracks): return np.random.randint(
         mintrack, maxtrack)
-    m_arr[0, :6] = [1 for _ in range(6)]
-    m_arr[1, :6] = [0 * track() for _ in range(6)]
-    m_arr[2, :6] = [0 * track() for _ in range(6)]  # basically ignore this track# noqa
-    m_arr[3, :6] = [0 * track() for _ in range(6)]  # basically ignore this track # noqa
+    m_arr[0, :6] = [track() for _ in range(6)]
+    m_arr[1, :6] = [track() for _ in range(6)]
+    m_arr[2, :6] = [track() for _ in range(6)]
+    m_arr[3, :6] = [track() for _ in range(6)]
 
-    # note range
+    # note range is fixed between 20 and 60
     max_range = 60
     min_range = 20
     for i in range(max_tracks):
@@ -91,9 +90,9 @@ def run(seed):
         raise Exception('Picoloop failed')
 
     # store raw files on file system for retrieval later
-    note_array_copy_cmd = f'cp note_array.csv {os.path.abspath(thisdir)}/data/note_array{seed}.csv'
-    bars_array_copy_cmd = f'cp bars_threads.csv {os.path.abspath(thisdir)}/data/bars_threads{seed}.csv'
-    audio_out_copy_cmd = f'cp audioout.wav {os.path.abspath(thisdir)}/data/audio{seed}.wav'
+    note_array_copy_cmd = f'cp {os.path.abspath(thisdir)}/picoloop/note_array.csv {os.path.abspath(thisdir)}/data/note_array{seed}.csv'
+    bars_array_copy_cmd = f'cp {os.path.abspath(thisdir)}/picoloop/bars_threads.csv {os.path.abspath(thisdir)}/data/bars_threads{seed}.csv'
+    audio_out_copy_cmd = f'cp {os.path.abspath(thisdir)}/picoloop/audioout.wav {os.path.abspath(thisdir)}/data/audio{seed}.wav'
     print(note_array_copy_cmd)
     print(bars_array_copy_cmd)
     print(audio_out_copy_cmd)
